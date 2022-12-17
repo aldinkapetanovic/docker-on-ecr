@@ -28,4 +28,4 @@ jobs:
         run: |
           docker build . --file Dockerfile --tag php
           docker tag php:latest public.ecr.aws/m6c3u2j6/php:latest
-          docker push 663310186153.dkr.ecr.us-east-1.amazonaws.com/php:latest
+          docker push public.ecr.aws/m6c3u2j6/php:latest
