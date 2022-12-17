@@ -26,6 +26,6 @@ jobs:
 
       - name: Build, tag and push the Docker image
         run: |
-          docker build . --file Dockerfile --tag phprivate
-          docker tag phprivate:latest 663310186153.dkr.ecr.us-east-1.amazonaws.com/phprivate:latest
-          docker push 663310186153.dkr.ecr.us-east-1.amazonaws.com/phprivate:latest
+          docker build . --file Dockerfile --tag php
+          docker tag php:latest public.ecr.aws/m6c3u2j6/php:latest
+          docker push 663310186153.dkr.ecr.us-east-1.amazonaws.com/php:latest
