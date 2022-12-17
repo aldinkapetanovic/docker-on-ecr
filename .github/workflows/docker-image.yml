@@ -2,17 +2,30 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      - name: Check out the codebase
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
+          aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+          aws-region: eu-east-1
+
+      - name: Login to ECR
+        run: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 663310186153.dkr.ecr.us-east-1.amazonaws.com
+
+      - name: Build, tag and push the Docker image
+        run: |
+          docker build . --file Dockerfile --tag phprivate
+          docker tag phprivate:latest 663310186153.dkr.ecr.us-east-1.amazonaws.com/phprivate:latest
+          docker push 663310186153.dkr.ecr.us-east-1.amazonaws.com/phprivate:latest
